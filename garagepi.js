@@ -19,7 +19,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 
 // Logging
-var logDirectory = path.join(__dirname, 'log');
+var logDirectory = path.join(__dirname, '../logs');
 // ensure log directory exists
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
 // create a rotating write stream
@@ -88,6 +88,7 @@ function takeSnaps() {
     var imgPath = path.join(__dirname, 'public/images');
     var cmd = 'raspistill -vf -hf -w 640 -h 480 -ex auto -q 100 -e png -sh 100 -o ' + imgPath + '/garage.png';
     var exec = require('child_process').exec;
+    
     exec(cmd, function (error, stdout, stderr) {
       if (error !== null) {
         console.log('exec error: ' + error);
