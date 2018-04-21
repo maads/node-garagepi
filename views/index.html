@@ -37,16 +37,17 @@
 
 <body id="background">
     <button id="button">Garage Door</button>
-
 </body>
 
 <script src="/javascripts/jquery-3.2.1.min.js"></script>
 <script>
   $(document).ready(function() {
     $('#button').on('click', function() {
-      console.log('clicked');
+      $('#button').attr('disabled', 'disabled');
       $.getJSON("/api/clickbutton", function(data) {
         console.log('clickbutton done:', data);
+      }).always(function() {
+        $('#button').removeAttr('disabled');
       });
     });
   });
