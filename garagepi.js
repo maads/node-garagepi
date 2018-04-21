@@ -1,4 +1,8 @@
 var path = require('path');
+
+var fs = require('fs');
+var rfs = require('rotating-file-stream')
+
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var GPIO = require("onoff").Gpio;
@@ -14,7 +18,18 @@ require('console-stamp')(console, '[HH:MM:ss]');
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 
-app.use(logger('dev'));
+// Logging
+var logDirectory = path.join(__dirname, 'log');
+// ensure log directory exists
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+// create a rotating write stream
+var accessLogStream = rfs('access.log', {
+  interval: '1d', // rotate daily
+  path: logDirectory
+});
+// setup the logger
+app.use(morgan('combined', {stream: accessLogStream}))
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
