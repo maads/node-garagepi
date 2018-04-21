@@ -3,7 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var rfs = require('rotating-file-stream')
 
-var logger = require('morgan');
+var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var GPIO = require("onoff").Gpio;
 var express = require('express');
