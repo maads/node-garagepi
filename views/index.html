@@ -35,22 +35,28 @@
   </style>
 </head>
 
-<body id="background">
+<body id="background" onload="init()">
     <button id="button">Garage Door</button>
 </body>
 
-<script src="/javascripts/jquery-3.2.1.min.js"></script>
 <script>
-  $(document).ready(function() {
-    $('#button').on('click', function() {
-      $('#button').attr('disabled', 'disabled');
-      $.getJSON("/api/clickbutton", function(data) {
-        console.log('clickbutton done:', data);
-      }).always(function() {
-        $('#button').removeAttr('disabled');
-      });
+
+  function init() {
+    var btn = document.querySelector('#button');
+    btn.addEventListener('click', function(){
+      btn.setAttribute('disabled', 'disabled');
+      fetch('/api/clickbutton')
+        .then(function(data){
+          if(data.status === 200){
+            console.log('clickbutton done:', data);
+          }
+          btn.removeAttribute('disabled');
+        })
+        .catch(function(error) {
+          console.log('There has been a problem with your fetch operation: ', error.message);
+        });
     });
-  });
+  }
 </script>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -60,10 +66,8 @@
     var t = new Date().getTime();
     var url = "url(/images/garage.jpg?t=" + t + ") no-repeat 50% 50% fixed";
     console.log('load new snapshot: ' + url);
-    $("#background").css("background", url);
-    $("#background").css("background-size", "cover");
-    $("#background").css("-moz-background-size", "cover");
-    $("#background").css("-webkit-background-size", "cover");
+    var backgroundImg = document.querySelector('#background');
+    backgroundImg.setAttribute('style', 'background:' + url + ';background-size: cover;-moz-background-size: cover;-o-background-size:   cover;-webkit-background-size: cover;');
   });
 </script>
 </html>
