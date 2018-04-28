@@ -61,7 +61,7 @@ function outputSequence(pin, seq, timeout) {
 }
 
 function gpioWrite(gpio, pin, seq, timeout) {
-  if (!seq || seq.length <= 0) { 
+  if (!seq || seq.length <= 0) {
     console.log('closing pin:', pin);
     gpio.unexport();
     return;
@@ -86,9 +86,9 @@ app.use(function(req, res, next) {
 function takeSnaps() {
   var autoSnapshot = setTimeout(function() {
     var imgPath = path.join(__dirname, 'public/images');
-    var cmd = 'raspistill -vf -hf -w 640 -h 480 -ex auto -q 100 -e png -sh 100 -o ' + imgPath + '/garage.png';
+    var cmd = 'raspistill -vf -hf -w 640 -h 480 -ex auto -q 20 -e jpg -sh 100 -o ' + imgPath + '/garage.jpg';
     var exec = require('child_process').exec;
-    
+
     exec(cmd, function (error, stdout, stderr) {
       if (error !== null) {
         console.log('exec error: ' + error);
