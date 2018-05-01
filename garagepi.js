@@ -69,10 +69,14 @@ function gpioWrite(gpio, pin, seq, timeout) {
 
   var value = seq.substr(0, 1);
   seq = seq.substr(1);
-  setTimeout(function() {
-    console.log('gpioWrite, value:', value, ' seq:', seq);
-    gpio.writeSync(value);
-    gpioWrite(gpio, pin, seq, timeout);
+  setTimeout(function () {
+    try {
+      console.log('gpioWrite, value:', value, ' seq:', seq);
+      gpio.writeSync(value);
+      gpioWrite(gpio, pin, seq, timeout);
+    } catch (e) {
+      gpioWrite(gpio, pin, seq, timeout);
+    }
   }, timeout);
 }
 
